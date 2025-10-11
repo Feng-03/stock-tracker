@@ -1,13 +1,30 @@
-import yfinance as yf
-import os
+import mplfinance as mpf
+import yfinance as yf 
+import pandas as pd
 
+# Define the stock symbol and date range
+stock_symbol = "AAPL"
+start_date = "2022-01-01"
+end_date = "2022-03-30"
 
-# Make sure data folder exists
-os.makedirs("data", exist_ok=True)
+# Load historical data
+stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
+# Load your stock data
+# stock_data.to_csv('data/test.csv')
+stock_data = pd.read_csv('data/test.csv')
 
-# Download stock data (Apple as example)
-data = yf.download("AAPL", start="2025-09-05")
-print(data.head())
+# Convert to datetime and set index
+stock_data['Date'] = pd.to_datetime(stock_data['Date'])
+stock_data.set_index('Date', inplace=True)
 
-# Save to CSV
-data.to_csv("data/AAPL_2022_2024.csv")
+# Ensure numeric columns, safety pin to test if they are integers or float value
+cols = ['Open', 'High', 'Low', 'Close', 'Volume']
+for col in cols:
+    stock_data[col] = pd.to_numeric(stock_data[col], errors='coerce')
+
+stock_data.dropna(subset=cols, inplace=True)
+
+# print(stock_data)
+
+# Plot
+mpf.plot(stock_data, type='candle')
