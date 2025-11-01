@@ -1,0 +1,1 @@
+This is a custom build financial visualization and social networking platform for traders and investors. Mostly use for looking at stocks.
