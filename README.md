@@ -1,1 +1,1 @@
-This is a custom build financial visualization and social networking platform for traders and investors. Mostly use for looking at stocks.
+This is a custom build financial visualization and social networking platform for traders and investors. Mostly use for looking at stocks. Going to utalized candle sticks movement, RSI, Trendlines & Channels, Stochastic Oscillator in order to confidently show if the stock is going up or down.
