@@ -1,6 +1,9 @@
-import mplfinance as mpf
 import yfinance as yf 
+import mplfinance as mpf
+import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+import pandas_ta as ta
 import os
 
 # Define the stock symbol if available in yfinance
@@ -18,10 +21,6 @@ while True:
 # Include the date range for the stock data
 start_date = input("What start time (year-month-day): ")
 end_date = input("What end time (year-month-day): ")
-
-# Quick testing dates
-# start_date = "2025-01-04"
-# end_date = "2025-02-03"
 
 # Clearing csv files in data folder for organization purposes
 file = "/Users/fengs/Downloads/Programming-folder/stock-tracker/data/"+ stock_ticker + ".csv"
@@ -58,5 +57,23 @@ for col in cols:
 stock_data.dropna(subset=cols, inplace=True)
 
 # Plot graph and show data in terminal
-print(stock_data)
-mpf.plot(stock_data, type='candle')
+stock_data["RSI"] = stock_data.ta.rsi().iloc[:, 0]
+
+rsi_plot = mpf.make_addplot(
+    stock_data["RSI"], 
+    panel = 1,      # 0 = main panel (the candle graph chart), 1 = new lower panel (by itself)
+    color = 'purple',
+    ylabel = 'RSI'
+)
+
+mpf.plot(
+    stock_data,
+    type='candle',
+    style='yahoo',
+    title=f"{stock_ticker} with RSI",
+    addplot=rsi_plot,
+    volume=True,            # optional: show volume
+    panel_ratios=(3,1),     # main panel : RSI panel height ratio
+    tight_layout=False, 
+    figscale=1.2
+)
