@@ -3,6 +3,8 @@ import pandas as pd
 import yfinance as yf 
 import numpy as np
 import datetime as dt
+import matplotlib.pyplot as plt
+from scipy.stats import norm
 import glob
 import os
 
@@ -123,3 +125,23 @@ if p_value < 0.05:
     print("Conclusion: Reject the null hypothesis — portfolio returns differ significantly from zero.")
 else:
     print("Conclusion: Fail to reject the null hypothesis — no significant evidence of non-zero portfolio returns.")
+
+
+# Plot histogram of portfolio returns
+mu = portfolio_returns.mean()
+sigma = portfolio_returns.std()
+plt.figure(figsize=(10,6))
+plt.hist(portfolio_returns, bins=50, density=True, alpha=0.6, color='skyblue', edgecolor='black')
+
+# Plot the normal distribution (bell curve)
+xmin, xmax = plt.xlim()
+x = np.linspace(xmin, xmax, 100)
+p = norm.pdf(x, mu, sigma)
+plt.plot(x, p, 'r', linewidth=2, label=f'Normal Fit\nμ={mu:.4f}, σ={sigma:.4f}')
+
+plt.title('Portfolio Returns Distribution with Bell Curve')
+plt.xlabel('Daily Returns')
+plt.ylabel('Probability Density')
+plt.legend()
+plt.grid(True)
+plt.show()

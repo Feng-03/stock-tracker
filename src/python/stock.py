@@ -57,7 +57,10 @@ for col in cols:
 stock_data.dropna(subset=cols, inplace=True)
 
 # Plot graph and show data in terminal
-stock_data["RSI"] = stock_data.ta.rsi().iloc[:, 0]
+rsi = stock_data.ta.rsi()
+if isinstance(rsi, pd.DataFrame):
+    rsi = rsi.iloc[:, 0]
+stock_data["RSI"] = rsi
 
 rsi_plot = mpf.make_addplot(
     stock_data["RSI"], 
